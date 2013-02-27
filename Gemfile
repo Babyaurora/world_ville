@@ -19,6 +19,8 @@ end
 
 group :test do
   gem 'capybara' , '~>1.0'
+  gem 'rb-fsevent', :require => false
+  gem 'growl'
 end
 
 group :production do
