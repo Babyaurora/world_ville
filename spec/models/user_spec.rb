@@ -18,7 +18,7 @@
 require 'spec_helper'
 
 describe User do
-  before { @user = User.new(unique_id: "user@example", display_name: "Example User", email: "user@example.com", password: "foobar", password_confirmation: "foobar", user_type: 1) }
+  before { @user = User.new(display_name: "Example User", email: "user@example.com", password: "foobar", password_confirmation: "foobar", user_type: 0) }
   subject { @user }
   
   it { should respond_to(:unique_id) }
@@ -43,31 +43,58 @@ describe User do
       end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end    
     
+    it "should not allow access to unique id" do
+      expect do
+        User.new(unique_id: '')
+      end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
+    end    
+    
     it "should not allow access to session token" do
       expect do
         User.new(session_token: '')
       end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end    
   end
-
-  describe "when unique id is not present" do
-    before { @user.unique_id = " " }
-    it { should_not be_valid }
-  end
-
-  describe "when display name is not present" do
-    before { @user.display_name = " " }
-    it { should_not be_valid }
-  end
   
-  describe "when unique id is too long" do
-    before { @user.unique_id = "a" * 51 }
-    it { should_not be_valid }
-  end
-
-  describe "when display name is too long" do
-    before { @user.display_name = "a" * 21 }
-    it { should_not be_valid }
+  describe "display name" do
+    describe "when display name is not present" do
+      before { @user.display_name = " " }
+      it { should_not be_valid }
+    end
+  
+    describe "when display name is too long" do
+      before { @user.display_name = "a" * 51 }
+      it { should_not be_valid }
+    end
+    
+    describe "when display name is not unique for person type" do
+      before do 
+        another_user = @user.dup 
+        another_user.email = "user2@example.com"
+        another_user.save
+      end
+      it { should be_valid }
+    end
+    
+    describe "when display name is not unique for shop type" do
+      before do 
+        @user.user_type = 1
+        another_user = @user.dup 
+        another_user.email = "user2@example.com"
+        another_user.save
+      end
+      it { should be_valid }
+    end
+    
+    describe "when display name is not unique for community type" do
+      before do
+        @user.user_type = 2
+        another_user = @user.dup
+        another_user.email = "user2@example.com"
+        another_user.save
+      end
+      it { should_not be_valid }
+    end
   end
   
   describe "when user type is out of range" do
@@ -95,14 +122,21 @@ describe User do
       end
     end
   end
-
+  
   describe "when email address is already taken" do
-    before do
+    describe 'with same case' do
+      before { @user.dup.save }
+      it { should_not be_valid }
+    end
+    
+    describe "with different case" do
+      before do
       user_with_same_email = @user.dup
       user_with_same_email.email = @user.email.upcase
       user_with_same_email.save
     end
     it { should_not be_valid }
+    end
   end
 
   describe "email address with mixed case" do
