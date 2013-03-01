@@ -21,7 +21,7 @@ class User < ActiveRecord::Base
   
   after_initialize :set_community_pwd
   before_save { email.downcase! }
-  before_save :create_unique_id
+  before_save :set_unique_id
   before_save :create_session_token
   
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
@@ -29,8 +29,8 @@ class User < ActiveRecord::Base
   validates :display_name, presence: true, length: { maximum: 50 }
   validates :display_name, uniqueness: { scope: :user_type }, if: :community?                                      
   validates :email, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, unless: :community?
-  validates :password, presence: true, length: { minimum: 6 }, unless: :community?
-  validates :password_confirmation, presence: true, unless: :community?
+  validates :password, presence: true, length: { minimum: 6 }
+  validates :password_confirmation, presence: true
   #0: person, 1: shop, 2: community
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
   
@@ -38,13 +38,14 @@ class User < ActiveRecord::Base
   
   def set_community_pwd
     self.password = "foobar" if community?
+    self.password_confirmation = "foobar" if community?
   end
   
   def create_session_token
     self.session_token = SecureRandom.urlsafe_base64
   end
   
-  def create_unique_id
+  def set_unique_id
     self.unique_id = community?? self.display_name : self.email
   end
   
