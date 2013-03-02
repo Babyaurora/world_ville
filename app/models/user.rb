@@ -42,7 +42,7 @@ class User < ActiveRecord::Base
   end
   
   def create_session_token
-    self.session_token = SecureRandom.urlsafe_base64
+    self.session_token = community?? '#' : SecureRandom.urlsafe_base64
   end
   
   def set_unique_id
