@@ -56,6 +56,15 @@ describe User do
     end    
   end
   
+  describe "with admin attribute set to 'true'" do
+    before do
+      @user.save!
+      @user.toggle!(:admin)
+    end
+
+    it { should be_admin }
+  end
+  
   describe "display name" do
     describe "when display name is not present" do
       before { @user.display_name = " " }
@@ -185,5 +194,10 @@ describe User do
         specify { user_for_invalid_password.should be_false }
       end
     end
+  end
+  
+  describe "session token" do
+    before { @user.save }
+    its(:session_token) { should_not be_blank }
   end
 end
