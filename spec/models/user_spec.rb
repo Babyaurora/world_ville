@@ -32,6 +32,7 @@ describe User do
   it { should respond_to(:user_type) }
   it { should respond_to(:admin) }
   it { should respond_to(:coins) }
+  it { should respond_to(:stories) }
   
   it { should be_valid }
   it { should_not be_admin }
@@ -140,11 +141,11 @@ describe User do
     
     describe "with different case" do
       before do
-      user_with_same_email = @user.dup
-      user_with_same_email.email = @user.email.upcase
-      user_with_same_email.save
-    end
-    it { should_not be_valid }
+        user_with_same_email = @user.dup
+        user_with_same_email.email = @user.email.upcase
+        user_with_same_email.save
+      end
+      it { should_not be_valid }
     end
   end
 

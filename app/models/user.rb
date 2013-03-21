@@ -18,6 +18,7 @@
 class User < ActiveRecord::Base
   attr_accessible :display_name, :email, :password, :password_confirmation, :user_type
   has_secure_password
+  has_many :stories
   
   after_initialize :set_community_pwd
   before_save { email.downcase! }
