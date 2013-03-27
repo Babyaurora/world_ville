@@ -77,10 +77,21 @@ describe "User pages" do
   
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    let!(:story1) { FactoryGirl.create(:story, user: user, owner_user: user, content: "Foo") }
+    let!(:story2) { FactoryGirl.create(:story, user: user, owner_user: user, content: "Bar") }
+    let!(:story3) { FactoryGirl.create(:story, user: user, owner_user: other_user, content: "Irrelevent") }
     before { visit user_path(user) }
   
     it { should have_selector('h1',    text: user.display_name) }
     it { should have_selector('title', text: user.display_name) }
+    
+    describe "stories" do
+      it { should have_content(story1.content) }
+      it { should have_content(story2.content) }
+      it { should_not have_content(story3.content) }
+      it { should have_content(user.own_stories.count) }
+    end
   end
   
   describe "index" do

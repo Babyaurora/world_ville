@@ -8,4 +8,13 @@
       </h1>
     </section>
   </aside>
+  <div class="span8">
+    <% if @user.own_stories.any? %>
+      <h3>Stories (<%= @user.own_stories.count %>)</h3>
+      <ol class="stories">
+        <%= render @stories %>
+      </ol>
+      <%= will_paginate @stories %>
+    <% end %>
+  </div>
 </div>

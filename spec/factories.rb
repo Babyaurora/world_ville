@@ -10,4 +10,10 @@ FactoryGirl.define do
       admin true
     end
   end
+  
+  factory :story do
+    content "Lorem ipsum"
+    user
+    owner_user FactoryGirl.create(:user)
+  end
 end

@@ -33,6 +33,8 @@ describe User do
   it { should respond_to(:admin) }
   it { should respond_to(:coins) }
   it { should respond_to(:stories) }
+  it { should respond_to(:own_stories) }
+  it { should respond_to(:feed) }
   
   it { should be_valid }
   it { should_not be_admin }
@@ -200,5 +202,56 @@ describe User do
   describe "session token" do
     before { @user.save }
     its(:session_token) { should_not be_blank }
+  end
+  
+  describe "story associations" do
+    before { @user.save }
+    let!(:owner_user) { FactoryGirl.create(:user) }
+    let!(:older_story) { FactoryGirl.create(:story, user: @user, owner_user: owner_user, created_at: 1.day.ago) }
+    let!(:newer_story) { FactoryGirl.create(:story, user: @user, owner_user: owner_user, created_at: 1.hour.ago) }
+
+    describe "user created stories should be in the right order" do
+      its(:stories) { should == [newer_story, older_story] }
+    end
+    
+    it "user owned stories should be in the right order" do
+      owner_user.own_stories.should == [newer_story, older_story] 
+    end
+    
+    describe "status" do
+      let(:other_story) { FactoryGirl.create(:story, user: FactoryGirl.create(:user)) }
+
+      its(:feed) { should include(newer_story) }
+      its(:feed) { should include(older_story) }
+      its(:feed) { should_not include(other_story) }
+    end
+    
+    describe "destroy" do
+      let(:story_id1) { older_story.id }
+      let(:story_id2) { newer_story.id }
+      
+      describe "creation user" do
+        before { @user.destroy }
+       
+        it "should destroy associated stories" do
+           Story.find_by_id(story_id1).should be_nil
+           Story.find_by_id(story_id2).should be_nil
+        end
+      end
+      
+      it "should still be able to find stories if nothing is destroyed" do
+        Story.find_by_id(story_id1).should_not be_nil
+        Story.find_by_id(story_id2).should_not be_nil
+      end
+      
+      describe "owner user" do
+        before { owner_user.destroy }
+       
+        it "should destroy associated stories" do
+          Story.find_by_id(story_id1).should be_nil
+          Story.find_by_id(story_id2).should be_nil
+        end
+      end
+    end
   end
 end

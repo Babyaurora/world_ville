@@ -1,3 +1,18 @@
+# == Schema Information
+#
+# Table name: stories
+#
+#  id         :integer          not null, primary key
+#  content    :string(255)
+#  user_id    :integer          not null
+#  to_user_id :integer          not null
+#  reply_id   :integer
+#  rating     :integer          default(0)
+#  reply_num  :integer          default(0)
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#
+
 require 'spec_helper'
 
 describe Story do
@@ -14,11 +29,11 @@ describe Story do
   it { should respond_to(:rating) }
   it { should respond_to(:reply_num) }
   it { should respond_to(:user) }
+  it { should respond_to(:owner_user) }
   it { should respond_to(:original_story) }
   it { should respond_to(:reply_stories) }
   
   it { should be_valid }
-  its(:user) { should == user1 }
   
   describe "accessible attributes" do
     it "should not allow access to user_id" do
@@ -36,6 +51,21 @@ describe Story do
   describe "when to_id is not present" do
     before { @story.to_user_id = nil }
     it { should_not be_valid }
+  end
+  
+  describe "with blank content" do
+    before { @story.content = " " }
+    it { should_not be_valid }
+  end
+
+  describe "with content that is too long" do
+    before { @story.content = "a" * 1001 }
+    it { should_not be_valid }
+  end
+  
+  describe "user association" do
+    its(:user) { should == user1 }
+    its(:owner_user) { should == user2 }
   end
   
   describe "reply story" do

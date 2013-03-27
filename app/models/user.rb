@@ -18,7 +18,8 @@
 class User < ActiveRecord::Base
   attr_accessible :display_name, :email, :password, :password_confirmation, :user_type
   has_secure_password
-  has_many :stories
+  has_many :stories, dependent: :destroy
+  has_many :own_stories, class_name: 'Story', foreign_key: :to_user_id, dependent: :destroy
   
   after_initialize :set_community_pwd
   before_save { email.downcase! }
@@ -34,6 +35,10 @@ class User < ActiveRecord::Base
   validates :password_confirmation, presence: true
   #0: person, 1: shop, 2: community
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
+  
+  def feed
+    stories
+  end
   
   private
   

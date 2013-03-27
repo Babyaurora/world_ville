@@ -54,7 +54,6 @@ describe "AuthenticationPages" do
       let(:user) { FactoryGirl.create(:user) }
 
       describe "in the Users controller" do
-
         describe "visiting the edit page" do
           before { visit edit_user_path(user) }
           it { should have_selector('title', text: 'Sign in') }
@@ -62,6 +61,18 @@ describe "AuthenticationPages" do
 
         describe "submitting to the update action" do
           before { put user_path(user) }
+          specify { response.should redirect_to(signin_path) }
+        end
+      end
+      
+      describe "in the Stories controller" do
+        describe "submitting to the create action" do
+          before { post stories_path }
+          specify { response.should redirect_to(signin_path) }
+        end
+
+        describe "submitting to the destroy action" do
+          before { delete story_path(FactoryGirl.create(:story, user: user)) }
           specify { response.should redirect_to(signin_path) }
         end
       end
@@ -75,7 +86,6 @@ describe "AuthenticationPages" do
         end
 
         describe "after signing in" do
-
           it "should render the desired protected page" do
             page.should have_selector('title', text: 'Edit user')
           end
