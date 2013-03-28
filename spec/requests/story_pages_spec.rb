@@ -31,7 +31,7 @@ describe "StoryPages" do
   end
   
   describe "story destruction" do
-    before { FactoryGirl.create(:story, user: user) }
+    before { FactoryGirl.create(:story, creator: user) }
 
     describe "as correct user" do
       before { visit root_path }

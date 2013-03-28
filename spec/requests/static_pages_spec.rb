@@ -12,8 +12,8 @@ describe "StaticPages" do
      describe "for signed-in users" do
       let(:user) { FactoryGirl.create(:user) }
       before do
-        FactoryGirl.create(:story, user: user, content: "Lorem ipsum")
-        FactoryGirl.create(:story, user: user, content: "Dolor sit amet")
+        FactoryGirl.create(:story, creator: user, content: "Lorem ipsum")
+        FactoryGirl.create(:story, creator: user, content: "Dolor sit amet")
         sign_in user
         visit root_path
       end
@@ -22,6 +22,17 @@ describe "StaticPages" do
         user.feed.each do |item|
           page.should have_selector("li##{item.id}", text: item.content)
         end
+      end
+      
+      describe "senders/receivers counts" do
+        let(:other_user) { FactoryGirl.create(:user) }
+        before do
+          other_user.receive!(user)
+          visit root_path
+        end
+
+        it { should have_link("0 senders", href: senders_user_path(user)) }
+        it { should have_link("1 receivers", href: receivers_user_path(user)) }
       end
     end
   end

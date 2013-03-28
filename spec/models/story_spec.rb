@@ -4,8 +4,8 @@
 #
 #  id         :integer          not null, primary key
 #  content    :string(255)
-#  user_id    :integer          not null
-#  to_user_id :integer          not null
+#  creator_id :integer          not null
+#  owner_id   :integer          not null
 #  reply_id   :integer
 #  rating     :integer          default(0)
 #  reply_num  :integer          default(0)
@@ -16,40 +16,40 @@
 require 'spec_helper'
 
 describe Story do
-  let(:user1) { FactoryGirl.create(:user) }
-  let(:user2) { FactoryGirl.create(:user) }
-  before { @story = user1.stories.create(content: "Lorem ipsum", to_user_id: user2.id) }
+  let(:creator) { FactoryGirl.create(:user) }
+  let(:owner) { FactoryGirl.create(:user) }
+  before { @story = creator.create_stories.create(content: "Lorem ipsum", owner_id: owner.id) }
   
   subject { @story }
   
   it { should respond_to(:content) }
-  it { should respond_to(:user_id) }
-  it { should respond_to(:to_user_id) }
+  it { should respond_to(:creator_id) }
+  it { should respond_to(:owner_id) }
   it { should respond_to(:reply_id) }
   it { should respond_to(:rating) }
   it { should respond_to(:reply_num) }
-  it { should respond_to(:user) }
-  it { should respond_to(:owner_user) }
+  it { should respond_to(:creator) }
+  it { should respond_to(:owner) }
   it { should respond_to(:original_story) }
   it { should respond_to(:reply_stories) }
   
   it { should be_valid }
   
   describe "accessible attributes" do
-    it "should not allow access to user_id" do
+    it "should not allow access to creator_id" do
       expect do
-        Story.new(user_id: user1.id)
+        Story.new(creator_id: creator.id)
       end.to raise_error(ActiveModel::MassAssignmentSecurity::Error)
     end    
   end
   
-  describe "when user_id is not present" do
-    before { @story.user_id = nil }
+  describe "when creator_id is not present" do
+    before { @story.creator_id = nil }
     it { should_not be_valid }
   end
   
-  describe "when to_id is not present" do
-    before { @story.to_user_id = nil }
+  describe "when owner_id is not present" do
+    before { @story.owner_id = nil }
     it { should_not be_valid }
   end
   
@@ -64,12 +64,12 @@ describe Story do
   end
   
   describe "user association" do
-    its(:user) { should == user1 }
-    its(:owner_user) { should == user2 }
+    its(:creator) { should == creator }
+    its(:owner) { should == owner }
   end
   
   describe "reply story" do
-    before { @reply_story1 = user1.stories.create(content: "Lorem ipsum", to_user_id: user2.id, reply_id: @story.id) }
+    before { @reply_story1 = creator.create_stories.create(content: "Lorem ipsum", owner_id: owner.id, reply_id: @story.id) }
     its(:reply_stories) { should include(@reply_story1) }
     it { should == @reply_story1.original_story }
    
@@ -79,7 +79,7 @@ describe Story do
       
       describe "increase" do
         before do
-          @reply_story2 = user1.stories.create(content: "Lorem ipsum", to_user_id: user2.id, reply_id: @story.id) 
+          @reply_story2 = creator.create_stories.create(content: "Lorem ipsum", owner_id: owner.id, reply_id: @story.id) 
           @story.reload
         end
         its(:reply_num) { should == 2 }

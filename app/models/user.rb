@@ -18,8 +18,13 @@
 class User < ActiveRecord::Base
   attr_accessible :display_name, :email, :password, :password_confirmation, :user_type
   has_secure_password
-  has_many :stories, dependent: :destroy
-  has_many :own_stories, class_name: 'Story', foreign_key: :to_user_id, dependent: :destroy
+  
+  has_many :create_stories, class_name: 'Story', foreign_key: :creator_id
+  has_many :own_stories, class_name: 'Story', foreign_key: :owner_id, dependent: :destroy
+  has_many :relationships, foreign_key: :receiver_id, dependent: :destroy 
+  has_many :reverse_relationships, class_name: 'Relationship', foreign_key: :sender_id, dependent: :destroy
+  has_many :senders, through: :relationships, source: :sender
+  has_many :receivers, through: :reverse_relationships, source: :receiver
   
   after_initialize :set_community_pwd
   before_save { email.downcase! }
@@ -37,7 +42,19 @@ class User < ActiveRecord::Base
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
   
   def feed
-    stories
+    Story.from_senders_of(self)
+  end
+  
+  def receiving?(other_user)
+    relationships.find_by_sender_id(other_user.id)
+  end
+
+  def receive!(other_user)
+    relationships.create!(sender_id: other_user.id)
+  end
+  
+  def unreceive!(other_user)
+    relationships.find_by_sender_id(other_user.id).destroy
   end
   
   private

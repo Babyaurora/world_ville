@@ -11,12 +11,23 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130319235633) do
+ActiveRecord::Schema.define(:version => 20130328162021) do
+
+  create_table "relationships", :force => true do |t|
+    t.integer  "sender_id"
+    t.integer  "receiver_id"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  add_index "relationships", ["receiver_id"], :name => "index_relationships_on_receiver_id"
+  add_index "relationships", ["sender_id", "receiver_id"], :name => "index_relationships_on_sender_id_and_receiver_id", :unique => true
+  add_index "relationships", ["sender_id"], :name => "index_relationships_on_sender_id"
 
   create_table "stories", :force => true do |t|
     t.string   "content"
-    t.integer  "user_id",                   :null => false
-    t.integer  "to_user_id",                :null => false
+    t.integer  "creator_id",                :null => false
+    t.integer  "owner_id",                  :null => false
     t.integer  "reply_id"
     t.integer  "rating",     :default => 0
     t.integer  "reply_num",  :default => 0
@@ -24,7 +35,8 @@ ActiveRecord::Schema.define(:version => 20130319235633) do
     t.datetime "updated_at",                :null => false
   end
 
-  add_index "stories", ["to_user_id", "created_at"], :name => "index_stories_on_to_user_id_and_created_at"
+  add_index "stories", ["creator_id", "created_at"], :name => "index_stories_on_creator_id_and_created_at"
+  add_index "stories", ["owner_id", "created_at"], :name => "index_stories_on_owner_id_and_created_at"
 
   create_table "users", :force => true do |t|
     t.string   "unique_id",                          :null => false

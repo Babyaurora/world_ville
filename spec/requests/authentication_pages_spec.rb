@@ -63,6 +63,16 @@ describe "AuthenticationPages" do
           before { put user_path(user) }
           specify { response.should redirect_to(signin_path) }
         end
+        
+        describe "visiting the senders page" do
+          before { visit senders_user_path(user) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+
+        describe "visiting the receivers page" do
+          before { visit receivers_user_path(user) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
       end
       
       describe "in the Stories controller" do
@@ -72,7 +82,7 @@ describe "AuthenticationPages" do
         end
 
         describe "submitting to the destroy action" do
-          before { delete story_path(FactoryGirl.create(:story, user: user)) }
+          before { delete story_path(FactoryGirl.create(:story, creator: user)) }
           specify { response.should redirect_to(signin_path) }
         end
       end

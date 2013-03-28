@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_filter :signed_in_user, only: [:edit, :update]
+  before_filter :signed_in_user, only: [:edit, :update, :senders, :receivers]
   before_filter :correct_user, only: [:edit, :update]
   before_filter :admin_user, only: [:index, :destroy]
   
@@ -44,6 +44,20 @@ class UsersController < ApplicationController
     User.find(params[:id]).destroy
     flash[:success] = "User destroyed."
     redirect_to users_url
+  end
+  
+  def senders
+    @title = "Senders"
+    @user = User.find(params[:id])
+    @users = @user.senders.paginate(page: params[:page])
+    render 'show_relationship'
+  end
+
+  def receivers
+    @title = "Receivers"
+    @user = User.find(params[:id])
+    @users = @user.receivers.paginate(page: params[:page])
+    render 'show_relationship'
   end
   
   private

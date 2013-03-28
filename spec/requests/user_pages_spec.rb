@@ -78,9 +78,9 @@ describe "User pages" do
   describe "profile page" do
     let(:user) { FactoryGirl.create(:user) }
     let(:other_user) { FactoryGirl.create(:user) }
-    let!(:story1) { FactoryGirl.create(:story, user: user, owner_user: user, content: "Foo") }
-    let!(:story2) { FactoryGirl.create(:story, user: user, owner_user: user, content: "Bar") }
-    let!(:story3) { FactoryGirl.create(:story, user: user, owner_user: other_user, content: "Irrelevent") }
+    let!(:story1) { FactoryGirl.create(:story, creator: user, owner: user, content: "Foo") }
+    let!(:story2) { FactoryGirl.create(:story, creator: user, owner: user, content: "Bar") }
+    let!(:story3) { FactoryGirl.create(:story, creator: user, owner: other_user, content: "Irrelevent") }
     before { visit user_path(user) }
   
     it { should have_selector('h1',    text: user.display_name) }
@@ -124,6 +124,34 @@ describe "User pages" do
         end
         it { should_not have_link('delete', href: user_path(admin)) }
       end
+    end
+  end
+  
+  describe "senders/receivers" do
+    let(:user) { FactoryGirl.create(:user) }
+    let(:other_user) { FactoryGirl.create(:user) }
+    before { user.receive!(other_user) }
+
+    describe "senders" do
+      before do
+        sign_in user
+        visit senders_user_path(user)
+      end
+
+      it { should have_selector('title', text: 'Senders') }
+      it { should have_selector('h3', text: 'Senders') }
+      it { should have_link(other_user.display_name, href: user_path(other_user)) }
+    end
+
+    describe "receivers" do
+      before do
+        sign_in other_user
+        visit receivers_user_path(other_user)
+      end
+
+      it { should have_selector('title', text: 'Receivers') }
+      it { should have_selector('h3', text: 'Receivers') }
+      it { should have_link(user.display_name, href: user_path(user)) }
     end
   end
 end

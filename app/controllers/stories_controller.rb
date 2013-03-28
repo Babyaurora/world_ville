@@ -3,7 +3,7 @@ class StoriesController < ApplicationController
   before_filter :correct_user,   only: :destroy
    
   def create
-    @story = current_user.stories.build(params[:story])
+    @story = current_user.create_stories.build(params[:story])
     if @story.save
       flash[:success] = "Story created!"
       redirect_to root_url
@@ -19,9 +19,10 @@ class StoriesController < ApplicationController
   end
   
   private
-
+    
     def correct_user
-      @story = current_user.stories.find_by_id(params[:id])
-      redirect_to root_url if @story.nil?
-    end
+    @story = current_user.create_stories.find_by_id(params[:id])
+    redirect_to root_url if @story.nil?
+  end
+
 end

@@ -32,9 +32,16 @@ describe User do
   it { should respond_to(:user_type) }
   it { should respond_to(:admin) }
   it { should respond_to(:coins) }
-  it { should respond_to(:stories) }
+  it { should respond_to(:create_stories) }
   it { should respond_to(:own_stories) }
   it { should respond_to(:feed) }
+  it { should respond_to(:relationships) }
+  it { should respond_to(:senders) }
+  it { should respond_to(:receiving?) }
+  it { should respond_to(:receive!) }
+  it { should respond_to(:unreceive!) }
+  it { should respond_to(:reverse_relationships) }
+  it { should respond_to(:receivers) }
   
   it { should be_valid }
   it { should_not be_admin }
@@ -206,52 +213,80 @@ describe User do
   
   describe "story associations" do
     before { @user.save }
-    let!(:owner_user) { FactoryGirl.create(:user) }
-    let!(:older_story) { FactoryGirl.create(:story, user: @user, owner_user: owner_user, created_at: 1.day.ago) }
-    let!(:newer_story) { FactoryGirl.create(:story, user: @user, owner_user: owner_user, created_at: 1.hour.ago) }
+    let!(:owner) { FactoryGirl.create(:user) }
+    let!(:older_story) { FactoryGirl.create(:story, creator: @user, owner: owner, created_at: 1.day.ago) }
+    let!(:newer_story) { FactoryGirl.create(:story, creator: @user, owner: owner, created_at: 1.hour.ago) }
 
     describe "user created stories should be in the right order" do
-      its(:stories) { should == [newer_story, older_story] }
+      its(:create_stories) { should == [newer_story, older_story] }
     end
     
     it "user owned stories should be in the right order" do
-      owner_user.own_stories.should == [newer_story, older_story] 
+      owner.own_stories.should == [newer_story, older_story] 
     end
     
     describe "status" do
-      let(:other_story) { FactoryGirl.create(:story, user: FactoryGirl.create(:user)) }
+      let(:other_story) { FactoryGirl.create(:story) }
+      let(:sender) { FactoryGirl.create(:user) }
+      
+      before do
+        @user.receive!(sender)
+        3.times { sender.create_stories.create!(content: "Lorem ipsum", owner_id: sender.id) }
+      end
 
       its(:feed) { should include(newer_story) }
       its(:feed) { should include(older_story) }
       its(:feed) { should_not include(other_story) }
+      its(:feed) do
+        sender.own_stories.each do |story|
+          should include(story)
+        end
+      end
     end
     
     describe "destroy" do
       let(:story_id1) { older_story.id }
       let(:story_id2) { newer_story.id }
       
-      describe "creation user" do
+      describe "creator" do
         before { @user.destroy }
        
-        it "should destroy associated stories" do
-           Story.find_by_id(story_id1).should be_nil
-           Story.find_by_id(story_id2).should be_nil
+        it "should not destroy associated stories" do
+           Story.find_by_id(story_id1).should_not be_nil
+           Story.find_by_id(story_id2).should_not be_nil
         end
       end
       
-      it "should still be able to find stories if nothing is destroyed" do
-        Story.find_by_id(story_id1).should_not be_nil
-        Story.find_by_id(story_id2).should_not be_nil
-      end
-      
-      describe "owner user" do
-        before { owner_user.destroy }
+      describe "owner" do
+        before { owner.destroy }
        
         it "should destroy associated stories" do
           Story.find_by_id(story_id1).should be_nil
           Story.find_by_id(story_id2).should be_nil
         end
       end
+    end
+  end
+  
+  describe "receiving" do
+    let(:other_user) { FactoryGirl.create(:user) }    
+    before do
+      @user.save
+      @user.receive!(other_user)
+    end
+
+    it { should be_receiving(other_user) }
+    its(:senders) { should include(other_user) }
+    
+    it "should be other user's receiver" do
+      other_user.receivers.should include(@user)
+    end
+    
+    describe "and unreceiving" do
+      before { @user.unreceive!(other_user) }
+
+      it { should_not be_receiving(other_user) }
+      its(:senders) { should_not include(other_user) }
     end
   end
 end

@@ -2,7 +2,7 @@
   <%= render 'shared/error_messages', object: f.object %>
   <div class="field">
     <%= f.text_area :content, placeholder: "Compose new story..." %>
-    <%= f.hidden_field :to_user_id, value: current_user.id %>
+    <%= f.hidden_field :owner_id, value: current_user.id %>
   </div>
   <%= f.submit "Post", class: "btn btn-large btn-primary" %>
 <% end %>

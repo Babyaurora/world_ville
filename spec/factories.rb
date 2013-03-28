@@ -13,7 +13,7 @@ FactoryGirl.define do
   
   factory :story do
     content "Lorem ipsum"
-    user
-    owner_user FactoryGirl.create(:user)
+    creator FactoryGirl.create(:user)
+    owner FactoryGirl.create(:user)
   end
 end
