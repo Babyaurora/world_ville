@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   validates :email, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, unless: :community?
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
-  #0: person, 1: shop, 2: community
+  #0: person, 1: attraction, 2: shop
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
   
   def feed
@@ -55,6 +55,14 @@ class User < ActiveRecord::Base
   
   def unreceive!(other_user)
     relationships.find_by_sender_id(other_user.id).destroy
+  end
+  
+  def self.search(location, type)
+    if type.empty?
+      find(:all, :conditions => ['display_name LIKE ?', "%#{location}%"])
+    else
+      find(:all, :conditions => ['display_name LIKE ? and user_type = ?', "%#{location}%", type])
+    end
   end
   
   private

@@ -60,6 +60,10 @@ class UsersController < ApplicationController
     render 'show_relationship'
   end
   
+  def search
+    @users = User.search(params[:location], params[:type])
+  end
+  
   private
     
     def correct_user

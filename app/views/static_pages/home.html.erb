@@ -17,14 +17,10 @@
     </div>
   </div>  
 <% else %>
-	<div class="center hero-unit">
-	  <h1>Welcome to the Worldville</h1>
-	
-	  <h2>
-	    This is the home page for the Worldville
-	  </h2>
-	
-	  <%= link_to "Sign up now!", signup_path, class: "btn btn-large btn-primary" %>
+	<div class="center">
+	  <h1>Want to meet friends and discover around the world</h1>
+	  <%= render 'shared/search_earth' %>
+	  <%= link_to "Join WorldVille!", signup_path, class: "btn btn-large btn-primary" %>
 	</div>
 <% end %> 
 

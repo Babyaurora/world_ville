@@ -41,14 +41,14 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 h1 {
-  font-size: 3em;
-  letter-spacing: -2px;
+  font-size: 2em;
+  letter-spacing: -1px;
   margin-bottom: 30px;
   text-align: center;
 }
 
 h2 {
-  font-size: 1.7em;
+  font-size: 1.5em;
   letter-spacing: -1px;
   margin-bottom: 30px;
   text-align: center;
@@ -187,6 +187,10 @@ input, textarea, select, .uneditable-input {
 
 input {
   height: auto !important;
+}
+
+#search_field {
+  width: 20%;
 }
 
 /* stories */

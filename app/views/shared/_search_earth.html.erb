@@ -1,0 +1,11 @@
+<div class="center">
+	<%= form_tag( { controller: "users", action: "search" }, method: "get", class: "form-horizontal"  ) do %>
+	<%= search_field_tag(:location, params[:location], id: "search_field", placeholder: "Location") %>
+	<%= select_tag(:type, '<option value=0>Residence</option><option  value=1>Attraction</option><option  value=2>Shop</option>'.html_safe, id: "search_field", prompt: "Building type: All") %>
+	<%= submit_tag("Search", class: "btn btn-primary") %>
+	<% end %>
+</div>
+<div class="center">
+	<%= image_tag "earth.jpg", size: "500x500" %>
+</div>
+
