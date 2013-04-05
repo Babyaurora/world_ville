@@ -193,8 +193,26 @@ input {
   width: 20%;
 }
 
-.house {
-  display: inline-block;
+/* interactions */
+
+.btn-group-interaction {
+  border-radius: 4px 4px 0 0;
+}
+
+.btn-group-interaction > .btn:first-child,
+.btn-group-interaction > .btn:last-child {
+  margin-top: 10px;
+}
+
+.btn-group-interaction > .btn:nth-child(2),
+.btn-group-interaction > .btn:nth-child(4) {
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.btn-group-interaction > .btn:nth-child(3) {
+  margin-left: 40px;
+  margin-top: 10px;
 }
 
 /* images */
