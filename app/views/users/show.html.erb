@@ -1,14 +1,30 @@
 <% provide(:title, @user.display_name) %>
 <div class="row">
-  <aside class="span4">
+  <aside class="span7">
     <section>
-      <h1>
+      <section>
+        <h1>
         <%= gravatar_for @user %>
         <%= @user.display_name %>
       </h1>
+      </section>
+      <section>
+        <%= render 'shared/stats' %>
+      </section>
+      <section>
+      	<div class="span3">
+      		<%= render 'shared/house' %>
+      	</div>
+      	<div class="span3 btn-group-vertical">
+      		<%= link_to "Knock on the door", '#', class: "btn btn-large" %>
+      		<%= link_to "Leave a message", '#', class: "btn btn-large" %>
+      		<%= link_to "Initiate a conversation", '#', class: "btn btn-large" %>
+      		<%= link_to "Make friends", '#', class: "btn btn-large" %>
+      	</div>
+      </section>
     </section>
   </aside>
-  <div class="span8">
+  <div class="span5">
     <% if @user.own_stories.any? %>
       <h3>Stories (<%= @user.own_stories.count %>)</h3>
       <ol class="stories">

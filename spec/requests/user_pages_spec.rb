@@ -127,31 +127,48 @@ describe "User pages" do
     end
   end
   
-  describe "senders/receivers" do
+  describe "show relationship" do
     let(:user) { FactoryGirl.create(:user) }
-    let(:other_user) { FactoryGirl.create(:user) }
-    before { user.receive!(other_user) }
-
-    describe "senders" do
-      before do
-        sign_in user
-        visit senders_user_path(user)
-      end
-
-      it { should have_selector('title', text: 'Senders') }
-      it { should have_selector('h3', text: 'Senders') }
-      it { should have_link(other_user.display_name, href: user_path(other_user)) }
+    let(:friend) { FactoryGirl.create(:user) }
+    let(:attraction) { FactoryGirl.create(:attraction) }
+    let(:shop) { FactoryGirl.create(:shop) }
+    before do 
+      user.receive!(friend) 
+      user.receive!(attraction) 
+      user.receive!(shop) 
     end
 
-    describe "receivers" do
+    describe "friends" do
       before do
-        sign_in other_user
-        visit receivers_user_path(other_user)
+        sign_in user
+        visit friends_user_path(user)
       end
 
-      it { should have_selector('title', text: 'Receivers') }
-      it { should have_selector('h3', text: 'Receivers') }
-      it { should have_link(user.display_name, href: user_path(user)) }
+      it { should have_selector('title', text: 'Friends') }
+      it { should have_selector('h3', text: 'Friends') }
+      it { should have_link(friend.display_name, href: user_path(friend)) }
+    end
+
+    describe "attractions" do
+      before do
+        sign_in user
+        visit attractions_user_path(user)
+      end
+
+      it { should have_selector('title', text: 'Attractions') }
+      it { should have_selector('h3', text: 'Attractions') }
+      it { should have_link(attraction.display_name, href: user_path(attraction)) }
+    end
+    
+    describe "shops" do
+      before do
+        sign_in user
+        visit shops_user_path(user)
+      end
+
+      it { should have_selector('title', text: 'Shops') }
+      it { should have_selector('h3', text: 'Shops') }
+      it { should have_link(shop.display_name, href: user_path(shop)) }
     end
   end
 end

@@ -64,13 +64,18 @@ describe "AuthenticationPages" do
           specify { response.should redirect_to(signin_path) }
         end
         
-        describe "visiting the senders page" do
-          before { visit senders_user_path(user) }
+        describe "visiting the friends page" do
+          before { visit friends_user_path(user) }
           it { should have_selector('title', text: 'Sign in') }
         end
 
-        describe "visiting the receivers page" do
-          before { visit receivers_user_path(user) }
+       describe "visiting the attractions page" do
+          before { visit attractions_user_path(user) }
+          it { should have_selector('title', text: 'Sign in') }
+        end
+        
+        describe "visiting the shops page" do
+          before { visit shops_user_path(user) }
           it { should have_selector('title', text: 'Sign in') }
         end
       end

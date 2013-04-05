@@ -25,14 +25,19 @@ describe "StaticPages" do
       end
       
       describe "senders/receivers counts" do
-        let(:other_user) { FactoryGirl.create(:user) }
+        let(:friend) { FactoryGirl.create(:user) }
+        let(:attraction) { FactoryGirl.create(:attraction) }
+        let(:shop) { FactoryGirl.create(:shop) }
         before do
-          other_user.receive!(user)
+          user.receive!(friend) 
+          user.receive!(attraction) 
+          user.receive!(shop) 
           visit root_path
         end
 
-        it { should have_link("0 senders", href: senders_user_path(user)) }
-        it { should have_link("1 receivers", href: receivers_user_path(user)) }
+        it { should have_link("1 friends", href: friends_user_path(user)) }
+        it { should have_link("1 attractions", href: attractions_user_path(user)) }
+        it { should have_link("1 shops", href: shops_user_path(user)) }
       end
     end
   end

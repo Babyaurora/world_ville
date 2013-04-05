@@ -9,6 +9,18 @@ FactoryGirl.define do
     factory :admin do
       admin true
     end
+    
+    factory :attraction do
+      sequence(:display_name)  { |n| "Attraction #{n}" }
+      email ''
+      user_type 1
+    end
+    
+    factory :shop do
+      sequence(:display_name)  { |n| "Shop #{n}" }
+      sequence(:email) { |n| "shop_#{n}@example.com"}  
+      user_type 2
+    end
   end
   
   factory :story do
