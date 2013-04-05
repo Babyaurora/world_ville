@@ -1,15 +1,20 @@
 <% @user ||= current_user %>
 <div class="stats">
-  <a href="<%= senders_user_path(@user) %>">
+  <a href="<%= friends_user_path(@user) %>">
     <strong id="senders" class="stat">
-      <%= @user.senders.count %>
+      <%= @user.friends.count %>
     </strong>
-    senders
+    friends
   </a>
-  <a href="<%= receivers_user_path(@user) %>">
-    <strong id="receivers" class="stat">
-      <%= @user.receivers.count %>
+  <a href="<%= attractions_user_path(@user) %>">
+    <strong id="senders" class="stat">
+      <%= @user.attractions.count %>
     </strong>
-    receivers
+    attractions
+  </a><a href="<%= shops_user_path(@user) %>">
+    <strong id="senders" class="stat">
+      <%= @user.shops.count %>
+    </strong>
+    shops
   </a>
 </div>

@@ -25,8 +25,11 @@ class User < ActiveRecord::Base
   has_many :reverse_relationships, class_name: 'Relationship', foreign_key: :sender_id, dependent: :destroy
   has_many :senders, through: :relationships, source: :sender
   has_many :receivers, through: :reverse_relationships, source: :receiver
+  has_many :friends, through: :relationships, source: :sender, conditions: "user_type = 0"
+  has_many :attractions, through: :relationships, source: :sender, conditions: "user_type = 1"
+  has_many :shops, through: :relationships, source: :sender, conditions: "user_type = 2"
   
-  after_initialize :set_community_pwd
+  after_initialize :set_attraction_pwd
   before_save { email.downcase! }
   before_save :set_unique_id
   before_save :create_session_token
@@ -34,15 +37,19 @@ class User < ActiveRecord::Base
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :unique_id, presence: true, uniqueness: true, on: :save
   validates :display_name, presence: true, length: { maximum: 50 }
-  validates :display_name, uniqueness: { scope: :user_type }, if: :community?                                      
-  validates :email, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, unless: :community?
+  validates :display_name, uniqueness: { scope: :user_type }, if: :attraction?                                      
+  validates :email, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, unless: :attraction?
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
   #0: person, 1: attraction, 2: shop
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
   
-  def feed
-    Story.from_senders_of(self)
+  def feed(type = nil)
+    Story.from_senders_of(self, type)
+  end
+  
+  def own_feed
+    Story.created_by(self)
   end
   
   def receiving?(other_user)
@@ -58,7 +65,8 @@ class User < ActiveRecord::Base
   end
   
   def self.search(location, type)
-    if type.empty?
+    # TODO currently location is searched in display_name field, it should be searched within location related fields once map model is avaliable and location implementation is decided
+    if type.blank?
       find(:all, :conditions => ['display_name LIKE ?', "%#{location}%"])
     else
       find(:all, :conditions => ['display_name LIKE ? and user_type = ?', "%#{location}%", type])
@@ -67,20 +75,20 @@ class User < ActiveRecord::Base
   
   private
   
-  def set_community_pwd
-    self.password = "foobar" if community?
-    self.password_confirmation = "foobar" if community?
+  def set_attraction_pwd
+    self.password = "foobar" if attraction?
+    self.password_confirmation = "foobar" if attraction?
   end
   
   def create_session_token
-    self.session_token = community?? '#' : SecureRandom.urlsafe_base64
+    self.session_token = attraction?? '#' : SecureRandom.urlsafe_base64
   end
   
   def set_unique_id
-    self.unique_id = community?? self.display_name : self.email
+    self.unique_id = attraction?? self.display_name : self.email
   end
   
-  def community?
-    user_type == 2
+  def attraction?
+    user_type == 1
   end
 end

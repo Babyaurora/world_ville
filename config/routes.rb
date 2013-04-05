@@ -1,7 +1,7 @@
 WorldVille::Application.routes.draw do
   resources :users do
     member do
-      get :senders, :receivers
+      get :friends, :attractions, :shops
     end
   end
   resources :sessions, only: [:new, :create, :destroy]

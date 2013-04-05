@@ -46,17 +46,24 @@ class UsersController < ApplicationController
     redirect_to users_url
   end
   
-  def senders
-    @title = "Senders"
+  def friends
+    @title = "Friends"
     @user = User.find(params[:id])
-    @users = @user.senders.paginate(page: params[:page])
+    @users = @user.friends.paginate(page: params[:page])
     render 'show_relationship'
   end
-
-  def receivers
-    @title = "Receivers"
+  
+  def attractions
+    @title = "Attractions"
     @user = User.find(params[:id])
-    @users = @user.receivers.paginate(page: params[:page])
+    @users = @user.attractions.paginate(page: params[:page])
+    render 'show_relationship'
+  end
+  
+  def shops
+    @title = "Shops"
+    @user = User.find(params[:id])
+    @users = @user.shops.paginate(page: params[:page])
     render 'show_relationship'
   end
   

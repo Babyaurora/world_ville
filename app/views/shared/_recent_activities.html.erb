@@ -1,0 +1,7 @@
+<% if @my_feeds.any? %>
+  <h3>My Recent Activities</h3>
+  <ol class="stories">
+    <%= render partial: 'shared/feed_item', collection: @my_feeds %>
+  </ol>
+  <%= will_paginate @my_feeds %>
+<% end %>

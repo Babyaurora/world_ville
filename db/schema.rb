@@ -45,7 +45,7 @@ ActiveRecord::Schema.define(:version => 20130328162021) do
     t.string   "password_digest",                    :null => false
     t.string   "session_token",                      :null => false
     t.integer  "user_type",                          :null => false
-    t.integer  "coins"
+    t.integer  "coins",           :default => 0
     t.boolean  "admin",           :default => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false

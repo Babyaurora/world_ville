@@ -35,6 +35,7 @@ describe User do
   it { should respond_to(:create_stories) }
   it { should respond_to(:own_stories) }
   it { should respond_to(:feed) }
+  it { should respond_to(:own_feed) }
   it { should respond_to(:relationships) }
   it { should respond_to(:senders) }
   it { should respond_to(:receiving?) }
@@ -66,6 +67,14 @@ describe User do
     end    
   end
   
+  describe "attraction creation" do
+    before do
+      @attraction = User.new(display_name: "Attraction", user_type: 1) 
+      subject { @attraction }
+    end
+    it { should be_valid }
+  end
+  
   describe "with admin attribute set to 'true'" do
     before do
       @user.save!
@@ -95,24 +104,24 @@ describe User do
       it { should be_valid }
     end
     
-    describe "when display name is not unique for shop type" do
-      before do 
-        @user.user_type = 1
-        another_user = @user.dup 
-        another_user.email = "user2@example.com"
-        another_user.save
-      end
-      it { should be_valid }
-    end
-    
     describe "when display name is not unique for community type" do
       before do
-        @user.user_type = 2
+        @user.user_type = 1
         another_user = @user.dup
         another_user.email = "user2@example.com"
         another_user.save
       end
       it { should_not be_valid }
+    end
+    
+    describe "when display name is not unique for shop type" do
+      before do 
+        @user.user_type = 2
+        another_user = @user.dup 
+        another_user.email = "user2@example.com"
+        another_user.save
+      end
+      it { should be_valid }
     end
   end
   
@@ -234,8 +243,8 @@ describe User do
         3.times { sender.create_stories.create!(content: "Lorem ipsum", owner_id: sender.id) }
       end
 
-      its(:feed) { should include(newer_story) }
-      its(:feed) { should include(older_story) }
+      its(:own_feed) { should include(newer_story) }
+      its(:own_feed) { should include(older_story) }
       its(:feed) { should_not include(other_story) }
       its(:feed) do
         sender.own_stories.each do |story|

@@ -8,7 +8,11 @@ class StoriesController < ApplicationController
       flash[:success] = "Story created!"
       redirect_to root_url
     else
-      @feed_items = []
+      # TODO need a better way to render the error msg
+      @my_feeds = []
+      @friend_feeds = []
+      @attraction_feeds = []
+      @shop_feeds = []
       render 'static_pages/home'
     end
   end

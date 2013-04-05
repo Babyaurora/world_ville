@@ -26,9 +26,22 @@ class Story < ActiveRecord::Base
   validates_presence_of :creator_id, :owner_id
   validates :content, presence: true, length: { maximum: 1000 }
   
-  def self.from_senders_of(user)
-    sender_ids = user.sender_ids
-    where("owner_id IN (?) OR creator_id = ?", sender_ids, user)
+  def self.from_senders_of(user, type)
+    sender_ids = case type
+    when 0
+      user.friend_ids
+    when 1
+      user.attraction_ids
+    when 2
+      user.shop_ids
+    else
+      user.sender_ids
+    end
+    where("owner_id IN (?)", sender_ids)
+  end
+  
+  def self.created_by(user)
+    where("creator_id = ?", user)
   end
   
 end

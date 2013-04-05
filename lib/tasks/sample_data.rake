@@ -17,7 +17,7 @@ def make_users
   
   99.times do |n|
     name  = Faker::Name.name
-    email = "example-#{n+1}@example.com"
+    email = "person-#{n+1}@example.com"
     password  = "password"
     User.create!(display_name: name,
                  email: email,
@@ -25,21 +25,57 @@ def make_users
                  password_confirmation: password,
                  user_type: 0)
   end
+  
+  100.times do |n|
+    name = Faker::Address.street_name
+    User.create!(display_name: name,
+                       email: '',
+                       user_type: 1)
+   end
+                       
+   100.times do |n|
+     name = Faker::Company.name
+     email = "shop-#{n+1}@example.com"
+     password  = "password"
+     User.create!(display_name: name,
+                 email: email,
+                 password: password,
+                 password_confirmation: password,
+                 user_type: 2)
+   end
 end
     
 def make_stories
-  users = User.all(limit: 6)
+  users = User.all
+  residence = users[0..6]
   50.times do
     content = Faker::Lorem.sentence(5)
-    users.each { |user| user.create_stories.create!(content: content, owner_id: user.id) }
+    residence.each { |user| user.create_stories.create!(content: content, owner_id: user.id) }
+  end
+  
+  attractions = users[100..106]
+  user = users.first
+  20.times do
+    content = Faker::Lorem.sentence(5)
+    attractions.each { |attr| user.create_stories.create!(content: content, owner_id: attr.id) }
+  end
+  
+  shops = users[200..206]
+  20.times do
+    content = Faker::Lorem.sentence(5)
+    shops.each { |shop| shop.create_stories.create!(content: content, owner_id: shop.id) }
   end
 end
 
 def make_relationships
   users = User.all
   user  = users.first
-  senders = users[2..50]
+  friends = users[2..50]
+  attractions = users[100..106]
+  shops = users[200..206]
   receivers = users[3..40]
-  senders.each { |sender| user.receive!(sender) }
+  friends.each { |friend| user.receive!(friend) }
+  attractions.each { |attr| user.receive!(attr) }
+  shops.each { |shop| user.receive!(shop) }
   receivers.each { |receiver| receiver.receive!(user) }
 end
