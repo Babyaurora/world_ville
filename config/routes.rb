@@ -19,6 +19,8 @@ WorldVille::Application.routes.draw do
   match '/signout', to: 'sessions#destroy', via: :delete
   
   match '/search', to: 'users#search'
+  match '/expand', to: 'users#expand'
+  match '/collapse', to: 'users#collapse'
   
   # The priority is based upon order of creation:
   # first created -> highest priority.

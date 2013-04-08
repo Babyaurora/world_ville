@@ -106,6 +106,15 @@ footer {
   }
 }
 
+/* floating bar */
+
+.fixed-right {
+  position: absolute;
+  top: 50px;
+  right: 10px;
+  height:100%;
+}
+
 /* sidebar */
 
 aside {

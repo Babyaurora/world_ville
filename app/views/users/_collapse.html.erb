@@ -1,0 +1,7 @@
+<%= link_to("-", collapse_path, remote: true) %>
+<strong>Friends online</strong>
+<ul>
+	<% current_user.friends.limit(10).each do |friend| %>
+      <li><%= link_to(truncate(friend.display_name, length: 15), '#') %></li>
+    <% end %>
+ </ul>
