@@ -106,13 +106,22 @@ footer {
   }
 }
 
-/* floating bar */
+/* friends online list */
 
 .fixed-right {
-  position: absolute;
+  position: fixed;
   top: 50px;
   right: 10px;
   height:100%;
+}
+
+#popup {
+  display: none;
+}
+
+ul#popup {
+  list-style: none;
+  text-indent: -1.5em;
 }
 
 /* sidebar */
@@ -206,6 +215,7 @@ input {
 
 .btn-group-interaction {
   border-radius: 4px 4px 0 0;
+  margin-top: 30px;
 }
 
 .btn-group-interaction > .btn:first-child,
@@ -228,6 +238,11 @@ input {
 
 .wide_image {
   width: 100%;
+}
+
+.small_image {
+  width: 20%;
+  left: 0
 }
 
 /* stories */

@@ -12,18 +12,7 @@
         <%= render 'shared/stats' %>
       </section>
       <section>
-      	<div class="span3">
-      		<%= render 'shared/house' %>
-      	</div>
-      	<% unless current_user && current_user?(@user) %>
-	      	<div class="span3 btn-group-interaction">
-	      		<%= link_to "Knock on the door", '#', class: "btn" %>
-	      		<%= link_to "Leave a message", '#', class: "btn" %>
-	      		<%= link_to "Start a chat", '#', class: "btn" %>
-	      		<%= link_to "Give a gift", '#', class: "btn" %>
-	      		<%= link_to "Make friends", '#', class: "btn" %>
-	      	</div>
-      	<% end %>
+      	<%= render 'shared/house' %>
       </section>
     </section>
   </aside>

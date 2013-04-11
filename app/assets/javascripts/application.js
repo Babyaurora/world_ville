@@ -14,3 +14,10 @@
 //= require jquery_ujs
 //= require bootstrap
 //= require_tree .
+$(document).ready(function() {
+    $('#popup_anchor').hover(function() {
+        $('#popup').fadeIn();
+    }, function() {
+        $('#popup').fadeOut();
+    });
+});

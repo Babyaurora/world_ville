@@ -1,7 +1,23 @@
-<%= link_to image_tag("house.jpg", class: "wide_image"), '#' %>
-<div class="center">
-	coins
-	<strong class="stat">
-		<%= @user.coins %>
-	</strong>
+<div class="row">
+	<div class="span4">
+	<%= link_to image_tag("house.jpg", class: "wide_image"), '#' %>
+	</div>
+	<div class="span3">
+	<% if current_user && current_user?(@user) %>
+		<div class="center">
+			coins
+			<strong class="stat">
+				<%= @user.coins %>
+			</strong>
+		</div>
+	<% else %>
+	  	<div class="btn-group-interaction">
+	  		<%= link_to "Knock on the door", '#', class: "btn" %>
+	  		<%= link_to "Leave a message", '#', class: "btn" %>
+	  		<%= link_to "Start a chat", '#', class: "btn" %>
+	  		<%= link_to "Give a gift", '#', class: "btn" %>
+	  		<%= link_to "Make friends", '#', class: "btn" %>
+	  	</div>
+	<% end %>
+	</div>
 </div>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130328162021) do
+ActiveRecord::Schema.define(:version => 20130408201006) do
 
   create_table "relationships", :force => true do |t|
     t.integer  "sender_id"
@@ -49,6 +49,13 @@ ActiveRecord::Schema.define(:version => 20130328162021) do
     t.boolean  "admin",           :default => false
     t.datetime "created_at",                         :null => false
     t.datetime "updated_at",                         :null => false
+    t.string   "country"
+    t.string   "state"
+    t.string   "city"
+    t.string   "zipcode"
+    t.float    "latitude"
+    t.float    "longitude"
+    t.boolean  "gmaps"
   end
 
   add_index "users", ["session_token"], :name => "index_users_on_session_token"

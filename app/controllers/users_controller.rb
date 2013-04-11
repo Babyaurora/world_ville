@@ -69,6 +69,11 @@ class UsersController < ApplicationController
   
   def search
     @users = User.search(params[:location], params[:type])
+    @json = @users.to_gmaps4rails do |user, marker|
+      marker.infowindow render_to_string(partial: "/users/infowindow", locals: { user: user })
+      marker.title "#{user.display_name}"
+      marker.json({ story: user.own_stories })
+    end
   end
   
   private

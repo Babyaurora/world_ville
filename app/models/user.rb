@@ -9,18 +9,27 @@
 #  password_digest :string(255)      not null
 #  session_token   :string(255)      not null
 #  user_type       :integer          not null
-#  coins           :integer
+#  coins           :integer          default(0)
 #  admin           :boolean          default(FALSE)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  country         :string(255)
+#  state           :string(255)
+#  city            :string(255)
+#  zipcode         :string(255)
+#  latitude        :float
+#  longitude       :float
+#  gmaps           :boolean
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :display_name, :email, :password, :password_confirmation, :user_type
+  attr_accessible :display_name, :email, :country, :state, :city, :zipcode, :password, :password_confirmation, :user_type
   has_secure_password
+  acts_as_gmappable
   
   has_many :create_stories, class_name: 'Story', foreign_key: :creator_id
   has_many :own_stories, class_name: 'Story', foreign_key: :owner_id, dependent: :destroy
+  has_one :main_story, class_name: 'Story', foreign_key: :owner_id
   has_many :relationships, foreign_key: :receiver_id, dependent: :destroy 
   has_many :reverse_relationships, class_name: 'Relationship', foreign_key: :sender_id, dependent: :destroy
   has_many :senders, through: :relationships, source: :sender
@@ -48,10 +57,6 @@ class User < ActiveRecord::Base
     Story.from_senders_of(self, type)
   end
   
-  def own_feed
-    Story.created_by(self)
-  end
-  
   def receiving?(other_user)
     relationships.find_by_sender_id(other_user.id)
   end
@@ -64,12 +69,17 @@ class User < ActiveRecord::Base
     relationships.find_by_sender_id(other_user.id).destroy
   end
   
+  def gmaps4rails_address
+    "#{self.zipcode}, #{self.city},  #{self.state}, #{self.country}" if self.zipcode? && self.city?
+    "#{self.state}, #{self.country}"
+  end
+  
   def self.search(location, type)
     # TODO currently location is searched in display_name field, it should be searched within location related fields once map model is avaliable and location implementation is decided
     if type.blank?
-      find(:all, :conditions => ['display_name LIKE ?', "%#{location}%"])
+      find(:all, :conditions => ['country LIKE ? or state LIKE ? or city LIKE ?', "%#{location}%", "%#{location}%", "%#{location}%"])
     else
-      find(:all, :conditions => ['display_name LIKE ? and user_type = ?', "%#{location}%", type])
+      find(:all, :conditions => ['(country LIKE ? or state LIKE ? or city LIKE ?) and user_type = ?', "%#{location}%", "%#{location}%", "%#{location}%", type])
     end
   end
   

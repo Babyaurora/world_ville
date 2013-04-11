@@ -9,10 +9,17 @@
 #  password_digest :string(255)      not null
 #  session_token   :string(255)      not null
 #  user_type       :integer          not null
-#  coins           :integer
+#  coins           :integer          default(0)
 #  admin           :boolean          default(FALSE)
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
+#  country         :string(255)
+#  state           :string(255)
+#  city            :string(255)
+#  zipcode         :string(255)
+#  latitude        :float
+#  longitude       :float
+#  gmaps           :boolean
 #
 
 require 'spec_helper'

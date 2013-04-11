@@ -39,9 +39,4 @@ class Story < ActiveRecord::Base
     end
     where("owner_id IN (?)", sender_ids)
   end
-  
-  def self.created_by(user)
-    where("creator_id = ?", user)
-  end
-  
 end

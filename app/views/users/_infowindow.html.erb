@@ -1,0 +1,13 @@
+<div class="span3">
+	<div class="row">
+		<aside class="span1">
+		<%= image_tag "girl.jpg", class: "wide_image" %>
+		</aside>
+		<div class="span2">
+		<h3><%= user.display_name %></h3>
+		</div>
+	</div>
+	<% unless user.own_stories.empty? %>
+		<p><%= user.own_stories.first.content %></p>
+	<% end %>
+</div>

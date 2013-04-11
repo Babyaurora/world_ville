@@ -10,6 +10,10 @@ end
 def make_users
   admin = User.create!(display_name: "Hello Kitty",
                email: "hk@example.com",
+               country: "China",
+               state: "Jilin",
+               city: "Changchun",
+               zipcode: "130012",
                password: "foobar",
                password_confirmation: "foobar",
                user_type: 0)
@@ -19,8 +23,14 @@ def make_users
     name  = Faker::Name.name
     email = "person-#{n+1}@example.com"
     password  = "password"
+    country = Faker::Address.country
+    state = Faker::Address.state
+    city = Faker::Address.city
     User.create!(display_name: name,
                  email: email,
+                 country: country,
+                 state: state,
+                 city: city,
                  password: password,
                  password_confirmation: password,
                  user_type: 0)
@@ -28,17 +38,29 @@ def make_users
   
   100.times do |n|
     name = Faker::Address.street_name
+    country = Faker::Address.country
+    state = Faker::Address.state
+    city = Faker::Address.city
     User.create!(display_name: name,
                        email: '',
+                       country: country,
+                       state: state,
+                       city: city,
                        user_type: 1)
    end
                        
    100.times do |n|
      name = Faker::Company.name
      email = "shop-#{n+1}@example.com"
+     country = Faker::Address.country
+    state = Faker::Address.state
+    city = Faker::Address.city
      password  = "password"
      User.create!(display_name: name,
                  email: email,
+                 country: country,
+                 state: state,
+                 city: city,
                  password: password,
                  password_confirmation: password,
                  user_type: 2)

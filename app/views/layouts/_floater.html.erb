@@ -1,5 +1,10 @@
 <% if signed_in? %>
-	<div class="fixed-right" id="friends_online">
-		<%= render 'users/expand' %>
-	</div>
+	<div class="fixed-right" id="popup_anchor">
+		<strong>+ Friends online</strong>
+		<ul id="popup">
+			<% current_user.friends.limit(10).each do |friend| %>
+		      <li><%= link_to(truncate(friend.display_name, length: 15), '#') %></li>
+		    <% end %>
+		 </ul>
+	 </div>
 <% end %>
