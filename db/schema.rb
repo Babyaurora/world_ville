@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130408201006) do
+ActiveRecord::Schema.define(:version => 20130415165213) do
 
   create_table "relationships", :force => true do |t|
     t.integer  "sender_id"
@@ -56,6 +56,9 @@ ActiveRecord::Schema.define(:version => 20130408201006) do
     t.float    "latitude"
     t.float    "longitude"
     t.boolean  "gmaps"
+    t.integer  "house_id"
+    t.integer  "founder_id"
+    t.integer  "mayor_id"
   end
 
   add_index "users", ["session_token"], :name => "index_users_on_session_token"

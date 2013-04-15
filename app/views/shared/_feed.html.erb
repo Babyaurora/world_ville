@@ -3,19 +3,19 @@
   <ol class="stories">
     <%= render partial: 'shared/feed_item', collection: @friend_feeds %>
   </ol>
-  <%= will_paginate @friend_feeds %>
+  <%= will_paginate @friend_feeds, param_name: "friend_page" %>
 <% end %>
 <% if @attraction_feeds.any? %>
   <h3>Attraction Stories</h3>
   <ol class="stories">
     <%= render partial: 'shared/feed_item', collection: @attraction_feeds %>
   </ol>
-  <%= will_paginate @attraction_feeds %>
+  <%= will_paginate @attraction_feeds, param_name: "attraction_page" %>
 <% end %>
 <% if @shop_feeds.any? %>
   <h3>Shop Stories</h3>
   <ol class="stories">
     <%= render partial: 'shared/feed_item', collection: @shop_feeds %>
   </ol>
-  <%= will_paginate @shop_feeds %>
+  <%= will_paginate @shop_feeds, param_name: "shop_page" %>
 <% end %>

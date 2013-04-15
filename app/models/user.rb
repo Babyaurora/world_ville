@@ -23,12 +23,13 @@
 #
 
 class User < ActiveRecord::Base
-  attr_accessible :display_name, :email, :country, :state, :city, :zipcode, :password, :password_confirmation, :user_type
+  attr_accessible :display_name, :email, :country, :state, :city, :zipcode, :password, :password_confirmation, :user_type, :house_id, :founder_id, :mayor_id
   has_secure_password
   acts_as_gmappable
   
   has_many :create_stories, class_name: 'Story', foreign_key: :creator_id
   has_many :own_stories, class_name: 'Story', foreign_key: :owner_id, dependent: :destroy
+  # TODO: implement Bio
   has_one :main_story, class_name: 'Story', foreign_key: :owner_id
   has_many :relationships, foreign_key: :receiver_id, dependent: :destroy 
   has_many :reverse_relationships, class_name: 'Relationship', foreign_key: :sender_id, dependent: :destroy
@@ -37,6 +38,10 @@ class User < ActiveRecord::Base
   has_many :friends, through: :relationships, source: :sender, conditions: "user_type = 0"
   has_many :attractions, through: :relationships, source: :sender, conditions: "user_type = 1"
   has_many :shops, through: :relationships, source: :sender, conditions: "user_type = 2"
+  belongs_to :founder, class_name: 'User'
+  belongs_to :mayor, class_name: 'User', foreign_key: :mayor_id
+  has_many :founder_of, class_name: 'User', foreign_key: :founder_id
+  has_many :mayor_of, class_name: 'User', foreign_key: :mayor_id
   
   after_initialize :set_attraction_pwd
   before_save { email.downcase! }
@@ -51,6 +56,8 @@ class User < ActiveRecord::Base
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
   validates_presence_of :country, :state
+  validates :house_id, presence: true
+  validates :founder_id, presence: true, if: :attraction?
   #0: person, 1: attraction, 2: shop
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
   
@@ -84,6 +91,10 @@ class User < ActiveRecord::Base
     end
   end
   
+  def attraction?
+    user_type == 1
+  end
+  
   private
   
   def set_attraction_pwd
@@ -97,9 +108,5 @@ class User < ActiveRecord::Base
   
   def set_unique_id
     self.unique_id = attraction?? self.display_name : self.email
-  end
-  
-  def attraction?
-    user_type == 1
   end
 end

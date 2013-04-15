@@ -1,0 +1,14 @@
+<% if @founder_list.any? %> 
+	<h3>Founder of</h3>
+	<ul class="houses row span6">
+		<%= render partial: 'shared/ownership_item', collection: @founder_list %>
+	</ul>
+	<%= will_paginate @founder_list, param_name: "founder_page" %>
+<% end %>
+<% if @mayor_list.any? %>
+	<h3>Mayor of</h3>
+	<ul class="houses row span6">
+		<%= render partial: 'shared/ownership_item', collection: @mayor_list %>
+	</ul>
+	<%= will_paginate @mayor_list, param_name: "mayor_page" %>
+<% end %>

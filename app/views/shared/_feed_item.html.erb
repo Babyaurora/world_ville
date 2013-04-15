@@ -1,11 +1,11 @@
 <li id="<%= feed_item.id %>">
-  <%= link_to gravatar_for(feed_item.creator), feed_item.creator %>
+  <%= link_to gravatar_for(feed_item.owner), feed_item.creator %>
   <span class="user">
-    <%= link_to feed_item.creator.display_name, feed_item.creator %>
+    <%= link_to feed_item.owner.display_name, feed_item.creator %>
   </span>
   <span class="content"><%= feed_item.content %></span>
   <span class="timestamp">
     Posted <%= time_ago_in_words(feed_item.created_at) %> ago.
   </span>
-  <%= render 'shared/delete_story', story: feed_item %>
+  <%= render 'shared/modify_story', story: feed_item %>
 </li>

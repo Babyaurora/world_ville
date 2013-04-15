@@ -34,6 +34,8 @@ class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
     @stories = @user.own_stories.paginate(page: params[:page])
+    @founder_list = @user.founder_of.paginate(page: params[:founder_page], per_page: 4)
+    @mayor_list = @user.mayor_of.paginate(page: params[:mayor_page], per_page: 4)
   end
   
   def index
@@ -73,7 +75,7 @@ class UsersController < ApplicationController
     @json = @users.to_gmaps4rails do |user, marker|
       marker.infowindow render_to_string(partial: "/users/infowindow", locals: { user: user })
       marker.picture({
-                  picture: ActionController::Base.helpers.asset_path("house1_small.jpg"),
+                  picture: ActionController::Base.helpers.asset_path("houses/house#{user.house_id+1}_small.jpg"),
                   width: 100,
                   height: 80
                  })

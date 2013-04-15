@@ -215,7 +215,7 @@ input {
 
 .btn-group-interaction {
   border-radius: 4px 4px 0 0;
-  margin-top: 30px;
+  margin-top: -5px;
 }
 
 .btn-group-interaction > .btn:first-child,
@@ -243,6 +243,12 @@ input {
 .small_image {
   width: 60%;
   left: 0
+}
+
+.houses {
+  list-style: none;
+  margin: 0; 
+  padding: 0;
 }
 
 /* stories */

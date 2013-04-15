@@ -16,6 +16,7 @@ def make_users
                zipcode: "130012",
                password: "foobar",
                password_confirmation: "foobar",
+               house_id: 1,
                user_type: 0)
   admin.toggle!(:admin)
   
@@ -31,8 +32,10 @@ def make_users
                  country: country,
                  state: state,
                  city: city,
+                 zipcode: '',
                  password: password,
                  password_confirmation: password,
+                 house_id: n%5,
                  user_type: 0)
   end
   
@@ -46,6 +49,9 @@ def make_users
                        country: country,
                        state: state,
                        city: city,
+                       zipcode: '',
+                       founder_id: n%4,
+                       house_id: n%5,
                        user_type: 1)
    end
                        
@@ -61,8 +67,10 @@ def make_users
                  country: country,
                  state: state,
                  city: city,
+                 zipcode: '',
                  password: password,
                  password_confirmation: password,
+                 house_id: n%5,
                  user_type: 2)
    end
 end
@@ -70,20 +78,20 @@ end
 def make_stories
   users = User.all
   residence = users[0..6]
-  50.times do
+  10.times do
     content = Faker::Lorem.sentence(5)
     residence.each { |user| user.create_stories.create!(content: content, owner_id: user.id) }
   end
   
   attractions = users[100..106]
   user = users.first
-  20.times do
+  4.times do
     content = Faker::Lorem.sentence(5)
     attractions.each { |attr| user.create_stories.create!(content: content, owner_id: attr.id) }
   end
   
   shops = users[200..206]
-  20.times do
+  4.times do
     content = Faker::Lorem.sentence(5)
     shops.each { |shop| shop.create_stories.create!(content: content, owner_id: shop.id) }
   end
