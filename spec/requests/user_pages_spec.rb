@@ -90,7 +90,6 @@ describe "User pages" do
       it { should have_content(story1.content) }
       it { should have_content(story2.content) }
       it { should_not have_content(story3.content) }
-      it { should have_content(user.own_stories.count) }
     end
   end
   

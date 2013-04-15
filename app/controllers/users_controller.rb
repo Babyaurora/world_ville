@@ -67,12 +67,17 @@ class UsersController < ApplicationController
     render 'show_relationship'
   end
   
+  # TODO: hardcoded house maker, should render user's own house
   def search
     @users = User.search(params[:location], params[:type])
     @json = @users.to_gmaps4rails do |user, marker|
       marker.infowindow render_to_string(partial: "/users/infowindow", locals: { user: user })
+      marker.picture({
+                  picture: ActionController::Base.helpers.asset_path("house1_small.jpg"),
+                  width: 100,
+                  height: 80
+                 })
       marker.title "#{user.display_name}"
-      marker.json({ story: user.own_stories })
     end
   end
   

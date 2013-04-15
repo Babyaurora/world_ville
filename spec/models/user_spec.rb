@@ -25,7 +25,7 @@
 require 'spec_helper'
 
 describe User do
-  before { @user = User.new(display_name: "Example User", email: "user@example.com", password: "foobar", password_confirmation: "foobar", user_type: 0) }
+  before { @user = FactoryGirl.create(:user) }
   subject { @user }
   
   it { should respond_to(:unique_id) }
@@ -42,7 +42,6 @@ describe User do
   it { should respond_to(:create_stories) }
   it { should respond_to(:own_stories) }
   it { should respond_to(:feed) }
-  it { should respond_to(:own_feed) }
   it { should respond_to(:relationships) }
   it { should respond_to(:senders) }
   it { should respond_to(:receiving?) }
@@ -250,8 +249,6 @@ describe User do
         3.times { sender.create_stories.create!(content: "Lorem ipsum", owner_id: sender.id) }
       end
 
-      its(:own_feed) { should include(newer_story) }
-      its(:own_feed) { should include(older_story) }
       its(:feed) { should_not include(other_story) }
       its(:feed) do
         sender.own_stories.each do |story|

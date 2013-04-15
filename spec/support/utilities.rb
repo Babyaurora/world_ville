@@ -12,6 +12,10 @@ def sign_up_user
   fill_in "Email",            with: "user@example.com"
   fill_in "Password",      with: "foobar"
   fill_in "Confirmation", with: "foobar"
+  fill_in "Country",        with: "Canada"
+  fill_in "State",            with: "Ontario"
+  fill_in "City",             with: "Waterloo"
+  fill_in "Zipcode",        with: "N2A4C9"
 end
 
 def edit_user(user)

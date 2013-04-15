@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
   validates :email, format: { with: VALID_EMAIL_REGEX }, uniqueness: { case_sensitive: false }, unless: :attraction?
   validates :password, presence: true, length: { minimum: 6 }
   validates :password_confirmation, presence: true
+  validates_presence_of :country, :state
   #0: person, 1: attraction, 2: shop
   validates :user_type, presence: true, inclusion: { in: [0, 1, 2] }
   
