@@ -6,8 +6,6 @@ class StoriesController < ApplicationController
    @story = current_user.create_stories.build(params[:story])
     if @story.save
       flash.now[:success] = "Story created!"
-      # TODO: try to append list item rather than refresh the list
-      @my_feeds = current_user.create_stories.paginate(page: params[:page], per_page: 4, total_entries: 20)
     end
   end
   
