@@ -10,8 +10,13 @@ module SessionsHelper
 
   def signed_in_user
     unless signed_in?
-      store_location
-      redirect_to signin_url, notice: "Please sign in."
+      # Wouldn't work with "knock on the door" button, because of new_story_path
+      # TODO: make it work
+      # store_location
+      respond_to do |format|
+        format.html { redirect_to signin_path, notice: "Please sign in." }
+        format.js { render js: "window.location.pathname='#{signin_path}'" }
+      end
     end
   end
 
@@ -34,6 +39,6 @@ module SessionsHelper
   end
 
   def store_location
-    session[:return_to] = request.url
+    session[:return_to] = request.url 
   end
 end

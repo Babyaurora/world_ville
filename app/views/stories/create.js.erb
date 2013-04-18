@@ -1,0 +1,15 @@
+<% if @story.errors.any? %>
+  $("#flash_notice").hide(300);
+  $("#story_errors").html("<%= escape_javascript(render 'shared/error_messages', object: @story) %>");
+  $("#story_errors").show(300);
+<% else %>
+  $("#story_errors").hide(300);
+  $("#flash_notice").html("<%= escape_javascript(render 'shared/flash_notice') %>");
+  $("#flash_notice").show(300);
+  $(":input:not(input[type=submit])").val("");
+  <% if @owner_id == current_user.id %>
+  	$("#story_list").html("<%= escape_javascript( render 'shared/recent_activities' ) %>");
+  <% else %>
+  	$("#story_form").addClass("invisible");
+  <% end %>  
+<% end %>

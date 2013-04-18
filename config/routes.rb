@@ -5,7 +5,7 @@ WorldVille::Application.routes.draw do
     end
   end
   resources :sessions, only: [:new, :create, :destroy]
-  resources :stories, only: [:create, :destroy]
+  resources :stories
   resources :relationships, only: [:create, :destroy]
   
   root to: 'static_pages#home'

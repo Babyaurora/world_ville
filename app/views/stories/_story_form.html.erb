@@ -1,8 +1,10 @@
-<%= form_for(@story) do |f| %>
+<%= form_for(@story, remote: true) do |f| %>
+  <div id="story_errors">
   <%= render 'shared/error_messages', object: f.object %>
+  </div>
   <div class="field">
     <%= f.text_area :content, placeholder: "Share your story..." %>
-    <%= f.hidden_field :owner_id, value: current_user.id %>
+     <%= f.hidden_field :owner_id, value: @owner_id %>
   </div>
   <%= f.submit "Post", class: "btn btn-primary" %>
 <% end %>

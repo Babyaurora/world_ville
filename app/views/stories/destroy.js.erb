@@ -1,0 +1,4 @@
+$("#story_errors").hide(300);
+$("#flash_notice").html("<%= escape_javascript(render 'shared/flash_notice') %>");
+$("#flash_notice").show(300);
+$("#<%= @story.id %>").remove();

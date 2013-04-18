@@ -12,11 +12,11 @@
 		</div>
 	<% else %>
 	  	<div class="btn-group-interaction">
-	  		<%= link_to "Knock on the door", '#', class: "btn" %>
-	  		<%= link_to "Leave a message", '#', class: "btn" %>
-	  		<%= link_to "Start a chat", '#', class: "btn" %>
-	  		<%= link_to "Give a gift", '#', class: "btn" %>
-	  		<%= link_to "Make friends", '#', class: "btn" %>
+	  		<%= link_to "Knock on the door", new_story_path, remote: true, class: "btn" %>
+	  		<%= link_to "Leave a message", signin_path, class: "btn" %>
+	  		<%= link_to "Start a chat", signin_path, class: "btn" %>
+	  		<%= link_to "Give a gift", signin_path, class: "btn" %>
+	  		<%= link_to "Make friends", signin_path, class: "btn" %>
 	  	</div>
 	<% end %>
 	</div>

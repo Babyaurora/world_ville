@@ -1,5 +1,6 @@
 <% if current_user?(story.creator) %>
-  	<%= link_to "delete", story, method: :delete,
+	<%= link_to "edit", edit_story_path(story), remote: true %>
+  	<%= link_to "delete", story, remote: true, method: :delete,
   	                                                   data: { confirm: "You sure?" }, 
   	                                                   title: story.content %>
 <% end %>

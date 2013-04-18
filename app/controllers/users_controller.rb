@@ -36,6 +36,10 @@ class UsersController < ApplicationController
     @stories = @user.own_stories.paginate(page: params[:page])
     @founder_list = @user.founder_of.paginate(page: params[:founder_page], per_page: 4)
     @mayor_list = @user.mayor_of.paginate(page: params[:mayor_page], per_page: 4)
+    if current_user
+      @story = current_user.create_stories.build
+      @owner_id = @user.id
+    end
   end
   
   def index

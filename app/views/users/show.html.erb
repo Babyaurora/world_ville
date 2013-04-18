@@ -13,6 +13,11 @@
 		<section>
 			<%= render 'shared/house' %>
 		</section>
+		<% if current_user %>
+			<section id="story_form" class="invisible">
+		       <%= render 'stories/story_form' %>
+		    </section>
+	    <% end %>
 		<section>
 			<h3>Things Around Her</h3>
 			<%= image_tag("world2.jpg", class: "small_image well") %>
@@ -28,7 +33,7 @@
 		</section>
 		<section>
 			<h3>Stories</h3>
-			<ol class="stories">
+			<ol class="stories" id="story_list">
 				<%= render @stories.limit(3) %>
 			</ol>
 			<%= will_paginate @stories %>
