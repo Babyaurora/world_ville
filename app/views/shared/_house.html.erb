@@ -16,7 +16,7 @@
 	  		<%= link_to "Leave a message", signin_path, class: "btn" %>
 	  		<%= link_to "Start a chat", signin_path, class: "btn" %>
 	  		<%= link_to "Give a gift", signin_path, class: "btn" %>
-	  		<%= link_to "Make friends", signin_path, class: "btn" %>
+	  		<%= render 'relationships/relationship_form' %>
 	  	</div>
 	<% end %>
 	</div>

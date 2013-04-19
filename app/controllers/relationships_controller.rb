@@ -4,12 +4,18 @@ class RelationshipsController < ApplicationController
   def create
     @user = User.find(params[:relationship][:sender_id])
     current_user.receive!(@user)
-    redirect_to @user
+    respond_to do |format|
+      format.html { redirect_to @user }
+      format.js
+    end
   end
 
   def destroy
     @user = Relationship.find(params[:id]).sender
     current_user.unreceive!(@user)
-    redirect_to @user
+    respond_to do |format|
+      format.html { redirect_to @user }
+      format.js
+    end
   end
 end
