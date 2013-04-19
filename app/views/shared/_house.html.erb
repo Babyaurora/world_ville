@@ -12,7 +12,7 @@
 		</div>
 	<% else %>
 		<% if signed_in? %>
-		  	<div class="btn-group-interaction">
+		  	<div class="btn-group-interaction-signedin">
 		  		<%= render 'stories/story_creation', classname: "first", title: "Knock on the door", content: "#{ current_user.display_name } knocked on your door." %>
 		  		<%= link_to "Leave a message", new_story_path, remote: true, class: "btn second" %>
 		  		<%= render 'stories/story_creation', classname: "third", title: "Start a chat", content: "#{ current_user.display_name } started a chat with you." %>
