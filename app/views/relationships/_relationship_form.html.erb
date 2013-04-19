@@ -1,9 +1,9 @@
-<% unless current_user?(@user) %>
-  <div id="relationship_form">
-  <% if current_user.receiving?(@user) %>
-    <%= render 'relationships/break_friend' %>
-  <% else %>
-    <%= render 'relationships/make_friend' %>
-  <% end %>
-  </div>
-<% end %>
+<div id="relationship_form" class="last">
+	<% unless current_user?(@user) %>
+	  <% if current_user.receiving?(@user) %>
+	    <%= render 'relationships/break_friend' %>
+	  <% else %>
+	    <%= render 'relationships/make_friend' %>
+	  <% end %>
+	<% end %>
+</div>

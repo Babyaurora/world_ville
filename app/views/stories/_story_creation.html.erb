@@ -1,0 +1,5 @@
+<%= form_for(current_user.create_stories.build(owner_id: @user.id, content: content), remote: true) do |f| %>
+	<div><%= f.hidden_field :owner_id %></div>
+	<div><%= f.hidden_field :content %></div>
+	<%= f.submit title, class: "btn #{ classname }" %>
+<% end %>

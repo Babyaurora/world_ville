@@ -1,4 +1,4 @@
 <%= form_for(current_user.relationships.build(sender_id: @user.id), remote: true) do |f| %>
 	<div><%= f.hidden_field :sender_id %></div>
-	<%= f.submit "Make friend", class: "btn" %>
+	<%= f.submit "Make friends", class: "btn" %>
 <% end %>

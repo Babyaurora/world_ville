@@ -6,7 +6,7 @@
   $("#story_errors").hide(300);
   $("#flash_notice").html("<%= escape_javascript(render 'shared/flash_notice') %>");
   $("#flash_notice").show(300);
-  $(":input:not(input[type=submit])").val("");
+  $(":input:not(input[type=submit], input[type=hidden])").val("");
   <% if @story.owner_id == current_user.id %>
   	$("#story_list").prepend("<%= escape_javascript( render 'stories/story_display', story: @story) %>");
   <% else %>

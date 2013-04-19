@@ -3,7 +3,7 @@
 	<%= link_to image_tag("houses/house#{@user.house_id+1}.jpg", class: "wide_image"), '#' %>
 	</div>
 	<div class="span3">
-	<% if current_user && current_user?(@user) %>
+	<% if signed_in? && current_user?(@user) %>
 		<div class="center">
 			coins
 			<strong class="stat">
@@ -11,13 +11,24 @@
 			</strong>
 		</div>
 	<% else %>
-	  	<div class="btn-group-interaction">
-	  		<%= link_to "Knock on the door", new_story_path, remote: true, class: "btn" %>
-	  		<%= link_to "Leave a message", signin_path, class: "btn" %>
-	  		<%= link_to "Start a chat", signin_path, class: "btn" %>
-	  		<%= link_to "Give a gift", signin_path, class: "btn" %>
-	  		<%= render 'relationships/relationship_form' %>
-	  	</div>
+		<% if signed_in? %>
+		  	<div class="btn-group-interaction">
+		  		<%= render 'stories/story_creation', classname: "first", title: "Knock on the door", content: "#{ current_user.display_name } knocked on your door." %>
+		  		<%= link_to "Leave a message", new_story_path, remote: true, class: "btn second" %>
+		  		<%= render 'stories/story_creation', classname: "third", title: "Start a chat", content: "#{ current_user.display_name } started a chat with you." %>
+		  		<%= render 'stories/story_creation', classname: "fourth", title: "Give a gift", content: "#{ current_user.display_name } gave a gift to you." %>
+		  		<%= render 'relationships/relationship_form' %>
+		  	</div>
+	  	<% else %>
+	  		<% store_location %>
+	  		<div class="btn-group-interaction">
+		  		<%= link_to "Knock on the door", signin_path, class: "btn"  %>
+		  		<%= link_to "Leave a message", signin_path, class: "btn" %>
+		  		<%= link_to "Start a chat", signin_path, class: "btn" %>
+		  		<%= link_to "Give a gift", signin_path, class: "btn" %>
+		  		<%= link_to "Make friends", signin_path, class: "btn" %>
+		  	</div>
+	  	<% end %>
 	<% end %>
 	</div>
 </div>

@@ -223,20 +223,37 @@ input {
 }
 
 .btn-group-interaction > .btn:first-child,
-.btn-group-interaction > .btn:last-child, 
-#relationship_form {
+.btn-group-interaction > .btn:last-child {
   margin-top: 10px;
 }
 
-.btn-group-interaction > .btn:nth-child(2),
+.btn-group-interaction > .btn:nth-child(2)
 .btn-group-interaction > .btn:nth-child(4) {
   margin-left: 20px;
   margin-top: 10px;
 }
 
+.third,
 .btn-group-interaction > .btn:nth-child(3) {
   margin-left: 40px;
   margin-top: 10px;
+}
+
+.second,
+.fourth {
+  margin-left: 20px;
+}
+
+.fourth {
+  margin-top: -20px;
+}
+
+.second {
+  margin-top: -15px !important;
+}
+
+.last {
+  margin-top: -15px;
 }
 
 /* images */
