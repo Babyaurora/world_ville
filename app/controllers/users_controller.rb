@@ -79,7 +79,7 @@ class UsersController < ApplicationController
     @json = @users.to_gmaps4rails do |user, marker|
       marker.infowindow render_to_string(partial: "/users/infowindow", locals: { user: user })
       marker.picture({
-                  picture: ActionController::Base.helpers.asset_path("houses/house#{user.house_id+1}_small.jpg"),
+                  picture: ActionController::Base.helpers.asset_path("houses/house#{user.house_id}_small.jpg"),
                   width: 100,
                   height: 80
                  })

@@ -1,0 +1,14 @@
+<div class="row container">
+	<div class="span2 center">
+		<strong>Founder</strong>
+		<%= gravatar_for @user.founder, size: 100 %>
+		<div><strong><%= @user.founder.display_name %></strong></div>
+	</div>
+	<% if @user.mayor %>
+	<div class="span2 center">
+		<strong>Mayor</strong>
+		<%= gravatar_for @user.mayor, size: 100 %>
+		<div><strong><%= @user.mayor.display_name %></strong></div>
+	</div>
+	<% end %>
+</div>

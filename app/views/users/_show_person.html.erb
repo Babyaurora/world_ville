@@ -1,0 +1,46 @@
+<% provide(:title, @user.display_name) %>
+<div class="row">
+	<aside class="span6">
+		<section class="row">
+			<section class="span3">
+				<h1> <%= gravatar_for @user %>
+				<%= @user.display_name %> </h1>
+			</section>
+			<section class="span3">
+				<%= render 'shared/stats' %>
+			</section>
+		</section>
+		<section>
+			<%= render 'shared/house' %>
+		</section>
+		<% if signed_in? %>
+			<section id="story_form" class="invisible">
+		       <%= render 'stories/story_form' %>
+		    </section>
+	    <% end %>
+		<section>
+			<h3>Things Around Her</h3>
+			<%= image_tag("world2.jpg", class: "small_image well") %>
+		</section>
+	</aside>
+	<div class="span6">
+		<% if @user.own_stories.any? %>
+			<section>
+				<h3>Bio</h3>
+				<ol class="stories">
+					<%= render @stories.last %>
+				</ol>
+			</section>
+			<section>
+				<h3>Stories</h3>
+				<ol class="stories" id="story_list">
+					<%= render @stories.limit(3) %>
+				</ol>
+				<%= will_paginate @stories %>
+			</section>
+		<% end %>
+		<section>
+			<%= render 'shared/ownership' %>
+		</section>
+	</div>
+</div>

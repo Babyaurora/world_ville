@@ -21,3 +21,7 @@ $(document).ready(function() {
         $('#popup').fadeOut();
     });
 });
+
+$(function(){
+  $('#myCarousel').carousel();
+});

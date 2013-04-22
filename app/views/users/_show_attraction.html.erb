@@ -1,0 +1,66 @@
+<% provide(:title, @user.display_name) %>
+<div class="row">
+	<aside class="span5">
+		<h1><%= @user.display_name %> </h1>
+		<section>
+			<%= render 'shared/house' %>
+		</section>
+		<%= render 'shared/owners' %>
+		<% if signed_in? %>
+			<section id="story_form">
+		       <%= render 'stories/story_form' %>
+		    </section>
+	    <% end %>
+	</aside>
+	<div class="span7">
+		<% if @user.own_stories.any? %>
+			<section>
+				<h3>Bio</h3>
+				<ol class="stories">
+					<%= render @stories.last %>
+				</ol>
+			</section>
+			<section>
+				<h3>Stories</h3>
+				<div id="myCarousel" class="carousel well">
+				  <div class="carousel-inner">
+				    <div class="active item">
+				    		<%= image_tag("palace/palace1.jpg", class: "wide_image") %>
+				    		<div class="carousel-caption">
+				          <p>Overlook</p>
+				        </div>
+				    </div>
+					<div class="item">
+						<%= image_tag("palace/palace2.jpg", class: "wide_image") %>
+						<div class="carousel-caption">
+				          <p>Gong Suo Xin Yu</p>
+				        </div>
+					</div>
+					<div class="item">
+						<%= image_tag("palace/palace3.jpg", class: "wide_image") %>
+						<div class="carousel-caption">
+				          <p>Corner Towner</p>
+				        </div>
+					</div>
+					<div class="item">
+						<%= image_tag("palace/palace4.jpg", class: "wide_image") %>
+						<div class="carousel-caption">
+				          <p>Zhen Huan Zhuan</p>
+				        </div>
+					</div>
+				  </div>
+				
+				  <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+				  <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+				</div>
+				<ol class="stories">
+				    <%= render partial: 'shared/feed_item', collection: @stories.limit(4) %>
+				  </ol>
+				<%= will_paginate @stories %>
+			</section>
+		<% end %>
+	</div>
+</div>
+
+
+	

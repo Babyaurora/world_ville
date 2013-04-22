@@ -38,7 +38,7 @@ class User < ActiveRecord::Base
   has_many :friends, through: :relationships, source: :sender, conditions: "user_type = 0"
   has_many :attractions, through: :relationships, source: :sender, conditions: "user_type = 1"
   has_many :shops, through: :relationships, source: :sender, conditions: "user_type = 2"
-  belongs_to :founder, class_name: 'User'
+  belongs_to :founder, class_name: 'User', foreign_key: :founder_id
   belongs_to :mayor, class_name: 'User', foreign_key: :mayor_id
   has_many :founder_of, class_name: 'User', foreign_key: :founder_id
   has_many :mayor_of, class_name: 'User', foreign_key: :mayor_id

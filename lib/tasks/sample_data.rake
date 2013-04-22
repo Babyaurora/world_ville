@@ -13,7 +13,7 @@ def make_users
                country: "China",
                state: "Jilin",
                city: "Changchun",
-               zipcode: "130012",
+               zipcode: "",
                password: "foobar",
                password_confirmation: "foobar",
                house_id: 1,
@@ -35,11 +35,21 @@ def make_users
                  zipcode: '',
                  password: password,
                  password_confirmation: password,
-                 house_id: n%5,
+                 house_id: n%5+1,
                  user_type: 0)
   end
   
-  100.times do |n|
+  User.create!(display_name: "Forbidden City",
+               email: "",
+               country: "China",
+               state: "Beijing",
+               city: "Beijing",
+               zipcode: "",
+               founder_id: 1,
+               house_id: 1,
+               user_type: 1)
+               
+  99.times do |n|
     name = Faker::Address.street_name
     country = Faker::Address.country
     state = Faker::Address.state
@@ -50,8 +60,8 @@ def make_users
                        state: state,
                        city: city,
                        zipcode: '',
-                       founder_id: n%4,
-                       house_id: n%5,
+                       founder_id: n%4+1,
+                       house_id: n%5+1,
                        user_type: 1)
    end
                        
@@ -70,7 +80,7 @@ def make_users
                  zipcode: '',
                  password: password,
                  password_confirmation: password,
-                 house_id: n%5,
+                 house_id: n%5+1,
                  user_type: 2)
    end
 end
